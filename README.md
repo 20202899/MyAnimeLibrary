@@ -1,8 +1,10 @@
-<b>Clean Architecture</b><br/>
-<b>Coordinator Pattern</b><br/>
-<b>Singleton Pattern</b><br/>
-<b>Factory Pattern</b><br/>
-<b>ViewCode</b><br/>
-<b>Alamofire</b><br/>
-<b>SDWebImage</b><br/>
-<b>Package Manager</b><br/>
+<b>Padrões adotados</b>
+
+Clean Architecture<br/>
+Coordinator Pattern<br/>
+Singleton Pattern<br/>
+Factory Pattern<br/>
+ViewCode<br/>
+Alamofire<br/>
+SDWebImage<br/>
+Package Manager<br/>
