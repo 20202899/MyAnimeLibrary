@@ -1,6 +1,7 @@
 <b>Padrões adotados</b>
 
 Clean Architecture<br/>
+Clean Swift - VIP<br/>
 Coordinator Pattern<br/>
 Singleton Pattern<br/>
 Factory Pattern<br/>
