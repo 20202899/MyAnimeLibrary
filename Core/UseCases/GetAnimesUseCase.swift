@@ -1,0 +1,12 @@
+//
+//  GetAnimesUseCase.swift
+//  Core
+//
+//  Created by Carlos Silva on 23/02/23.
+//
+
+import Foundation
+
+public protocol GetAnimesUseCase {
+    func getAnimes(completion: @escaping (Result<Animes, HttpErrorType>) -> Void)
+}
