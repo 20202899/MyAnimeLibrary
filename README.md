@@ -1,4 +1,5 @@
 <b>Clean Architecture</b><br/>
+<b>Coordinator Pattern</b><br/>
 <b>Singleton Pattern</b><br/>
 <b>Factory Pattern</b><br/>
 <b>ViewCode</b><br/>
