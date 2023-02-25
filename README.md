@@ -1,6 +1,7 @@
 <b>Padrões adotados</b>
 
 Clean Architecture<br/>
+SOLID<br/>
 VIP<br/>
 Coordinator Pattern<br/>
 Singleton Pattern<br/>
