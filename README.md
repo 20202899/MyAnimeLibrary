@@ -2,7 +2,7 @@
 
 Clean Architecture<br/>
 SOLID<br/>
-VIP<br/>
+MVVM<br/>
 Coordinator Pattern<br/>
 Singleton Pattern<br/>
 Factory Pattern<br/>
