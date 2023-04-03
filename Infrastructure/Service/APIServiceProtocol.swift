@@ -10,4 +10,5 @@ import Core
 
 public protocol APIServiceProtocol {
     func request<T: Decodable>(_ request: UrlProtocol, completion: @escaping (Result<T, HttpErrorType>) -> Void)
+    func request<T: Decodable>(_ request: UrlProtocol..., completion: @escaping (Result<[T], HttpErrorType>) -> Void)
 }

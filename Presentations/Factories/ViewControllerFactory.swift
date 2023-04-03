@@ -6,12 +6,12 @@
 //
 
 import UIKit
+import Core
 
-func makeAnimesViewController() -> UIViewController {
-    let vc = AnimesViewController()
-    let presenter = AnimesPresenter(displayLogic: vc)
-    let worker = AnimesWorker(getAnimesUseCase: makeGetAnimesUseCase())
-    let interactor = AnimesInteractor(animesWorker: worker, animesPresenter: presenter)
-    vc.interactor = interactor
-    return vc
+func makeAnimesViewController(coordinator: AnimesCoordinatorProtocol) -> UIViewController {
+    return AnimesViewController(viewModel: makeAnimesViewModel(coordinator: coordinator))
+}
+
+func makeDetailAnimeViewController(coordinator: AnimesCoordinator, animes: [Anime]) -> DetailAnimeViewController {
+    return DetailAnimeViewController(viewModel: makeAnimeDetailViewModel(coordinator: coordinator, animes: animes))
 }
