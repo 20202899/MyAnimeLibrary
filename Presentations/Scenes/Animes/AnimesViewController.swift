@@ -8,70 +8,61 @@
 import Foundation
 import UIKit
 import iOSCommons
+import Core
 
 final class AnimesViewController: UIViewController {
-    var interactor: AnimesInteractorProtocol?
-    var dataSource: AnimesDataSource = AnimesDataSource()
+    private var viewModel: AnimesViewModelProtocol
     
-    private lazy var contentTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .clear
-        return tableView
+    lazy var contentView: AnimesView = {
+        let view = AnimesView(frame: view.frame)
+        view.didNextForward = { [weak self] animes in
+            guard let self = self else { return }
+            
+            self.viewModel.selectedAnimes = animes
+        }
+        return view
     }()
+    
+    init(viewModel: AnimesViewModelProtocol) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    override func loadView() {
+        super.loadView()
+        
+        view = contentView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        startCoded()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
         fetchAnimes()
     }
     
     private func fetchAnimes() {
-        interactor?.fetchAnimes()
+        viewModel.getTodayAnimes { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let animes):
+                DispatchQueue.main.async {
+                    self.contentView.animes = animes
+                }
+                
+            case .failure:
+                break
+            }
+        }
     }
     
     deinit {
         debugPrint("deallocated")
-    }
-}
-
-
-// MARK: DisplayLogic
-extension AnimesViewController: AnimesDisplayLogicProtocol {
-    func showAnimes(viewModel: ShowAnimes.GetAnimes.ViewModel) {
-        dataSource.setDataChanged(data: viewModel.animes) { [weak self] in
-            guard let self = self else { return }
-            
-            self.contentTableView.reloadData()
-        }
-    }
-    
-    func showError(message: String) {
-        debugPrint(message)
-    }
-}
-
-extension AnimesViewController: ViewCodable {
-    func setupViews() {
-        view.backgroundColor = .systemBackground
-        title = "Animes"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .automatic
-        contentTableView.register(AnimeItemTableViewCell.self, forCellReuseIdentifier: AnimeItemTableViewCell.identifier)
-        contentTableView.dataSource = dataSource
-    }
-    
-    func addViews() {
-        view.addSubview(contentTableView)
-    }
-    
-    func addConstraints() {
-        contentTableView.anchorSuperView()
     }
 }

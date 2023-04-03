@@ -17,6 +17,6 @@ func makeAnimesRepository() -> AnimesRepository {
     return AnimesRemoteRepository(remoteGetAnimesDataSource: makeRemoteGetAnimesDataSource())
 }
 
-func makeGetAnimesUseCase() -> GetAnimesUseCase {
-    return GetAnimesUseCaseConcrete(repository: makeAnimesRepository())
+func makeGetTodayAnimesUseCase() -> GetTodayAnimesUseCase {
+    return GetTodayAnimesUseCaseConcrete(repository: makeAnimesRepository())
 }
