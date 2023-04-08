@@ -3,6 +3,7 @@
 Clean Architecture<br/>
 SOLID<br/>
 MVVM<br/>
+RxSwift<br/>
 Coordinator Pattern<br/>
 Singleton Pattern<br/>
 Factory Pattern<br/>
