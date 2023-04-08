@@ -1,37 +1,36 @@
 //
-//  ItemCollectionTableViewCell.swift
+//  CardView.swift
 //  Presentations
 //
-//  Created by Carlos Silva on 01/03/23.
+//  Created by Carlos Silva on 06/04/23.
 //
 
-import Foundation
-import UIKit
-import iOSCommons
-import Components
 import Core
-import SDWebImage
+import UIKit
+import Components
+import iOSCommons
 
-final class ItemCollectionTableViewCell: UITableViewCell, Identifiable {
+final class CardView: UIView {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.text = "Tendências da semana"
         label.numberOfLines = 2
         return label
     }()
     
-    var loadAllAnimes = false {
+    var isLoadAllAnimes = false {
         didSet {
-            if loadAllAnimes {
+            if isLoadAllAnimes {
                 contentTableView.reloadData()
             }
         }
     }
     
+    var contentTableViewHeightConstraint: NSLayoutConstraint?
     var containerViewLeftConstraint: NSLayoutConstraint?
     var containerViewRightConstraint: NSLayoutConstraint?
-    var titleLabelTopConstraint: NSLayoutConstraint?
     
     lazy var containerView: UIView = {
         let view = UIView()
@@ -55,57 +54,35 @@ final class ItemCollectionTableViewCell: UITableViewCell, Identifiable {
         return tableView
     }()
     
-    private var isTouchAnimate: Bool = false {
-        didSet {
-            let springProvider = UISpringTimingParameters(dampingRatio: 0.60, initialVelocity: .init(dx: 4, dy: 4))
-            let animate = UIViewPropertyAnimator(duration: 0.4, timingParameters: springProvider)
-            
-            animate.addAnimations { [weak self] in
-                guard let self = self else { return }
-                
-                self.containerView.transform = self.isTouchAnimate ? CGAffineTransform(scaleX: 0.85, y: 0.85) : CGAffineTransform(scaleX: 1, y: 1)
-            }
-            
-            animate.startAnimation()
-        }
-    }
-    
     var animes: [Anime] = [] {
         didSet {
             guard !animes.isEmpty else { return }
             contentTableView.reloadData()
         }
     }
-    var didAction: ((ItemCollectionTableViewCell)->Void)?
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         setupViews()
         addShadow()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError()
     }
     
     private func setupViews() {
-        selectionStyle = .none
-        contentView.backgroundColor = .clear
         backgroundColor = .clear
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
-        gesture.cancelsTouchesInView = true
-        containerView.addGestureRecognizer(gesture)
-        contentView.addSubview(containerView)
+        addSubview(containerView)
         
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: LayoutSpacing.s8.value),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -LayoutSpacing.s8.value)
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: LayoutSpacing.s8.value),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -LayoutSpacing.s8.value)
         ])
         
-        containerViewLeftConstraint = containerView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: LayoutSpacing.s24.value)
-        
-        containerViewRightConstraint = containerView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -LayoutSpacing.s24.value)
+        containerViewLeftConstraint = containerView.leftAnchor.constraint(equalTo: leftAnchor, constant: LayoutSpacing.s24.value)
+        containerViewRightConstraint = containerView.rightAnchor.constraint(equalTo: rightAnchor, constant: -LayoutSpacing.s24.value)
         
         containerViewLeftConstraint?.isActive = true
         containerViewRightConstraint?.isActive = true
@@ -113,24 +90,20 @@ final class ItemCollectionTableViewCell: UITableViewCell, Identifiable {
         containerView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: LayoutSpacing.s24.value),
-            titleLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -LayoutSpacing.s24.value)
+            titleLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -LayoutSpacing.s24.value),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: LayoutSpacing.s16.value)
         ])
-        
-        titleLabelTopConstraint = titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: LayoutSpacing.s16.value)
-        
-        titleLabelTopConstraint?.isActive = true
         
         containerView.addSubview(contentTableView)
         NSLayoutConstraint.activate([
-            contentTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            contentTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: LayoutSpacing.s4.value),
             contentTableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             contentTableView.leftAnchor.constraint(equalTo: containerView.leftAnchor),
             contentTableView.rightAnchor.constraint(equalTo: containerView.rightAnchor)
         ])
-    }
-    
-    @objc private func didTapView() {
-        didAction?(self)
+        
+        contentTableViewHeightConstraint = contentTableView.heightAnchor.constraint(equalToConstant: 340)
+        contentTableViewHeightConstraint?.isActive = true
     }
     
     func addShadow() {
@@ -148,19 +121,11 @@ final class ItemCollectionTableViewCell: UITableViewCell, Identifiable {
         containerView.layer.shadowRadius = .zero
         containerView.layer.shadowOffset = .zero
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesCancelled(touches, with: event)
-    }
 }
 
-extension ItemCollectionTableViewCell: UITableViewDataSource {
+extension CardView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return loadAllAnimes ? animes.count : 4
+        return isLoadAllAnimes ? animes.count : 4
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

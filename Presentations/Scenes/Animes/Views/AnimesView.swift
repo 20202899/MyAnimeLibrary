@@ -19,6 +19,8 @@ final class AnimesView: UIView {
         }
     }
     
+    var selectedView: ItemCollectionTableViewCell?
+    
     private lazy var contentScrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -65,11 +67,10 @@ final class AnimesView: UIView {
         
         contentTableView.register(ItemCollectionTableViewCell.self, forCellReuseIdentifier: ItemCollectionTableViewCell.identifier)
         contentTableView.dataSource = self
-        contentTableView.delegate = self
         
         addSubview(contentScrollView)
         NSLayoutConstraint.activate([
-            contentScrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            contentScrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: LayoutSpacing.s16.value),
             contentScrollView.leftAnchor.constraint(equalTo: leftAnchor),
             contentScrollView.rightAnchor.constraint(equalTo: rightAnchor),
             contentScrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
@@ -77,7 +78,7 @@ final class AnimesView: UIView {
         
         contentScrollView.addSubview(headerView)
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: contentScrollView.topAnchor, constant: LayoutSpacing.s16.value),
+            headerView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
             headerView.leftAnchor.constraint(equalTo: contentScrollView.leftAnchor),
             headerView.rightAnchor.constraint(equalTo: contentScrollView.rightAnchor),
             headerView.widthAnchor.constraint(equalToConstant: frame.width)
@@ -110,6 +111,7 @@ extension AnimesView: UITableViewDataSource, UITableViewDelegate {
         cell.didAction = { [weak self] view in
             guard let self = self else { return }
             
+            self.selectedView = view
             self.didNextForward?(animes.data)
         }
         

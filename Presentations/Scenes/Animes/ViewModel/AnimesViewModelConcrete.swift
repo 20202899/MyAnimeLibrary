@@ -7,10 +7,16 @@
 
 import Foundation
 import Core
+import Infrastructure
+import RxSwift
+import RxRelay
 
 final class AnimesViewModelConcrete: NSObject {
-    private let getTodayAnimesUseCase: GetTodayAnimesUseCase
+    private let disposeBag = DisposeBag()
+    private let getAnimesUseCase: GetAnimesUseCase
     private let coordinator: AnimesCoordinatorProtocol
+    
+    var animes: PublishRelay<[Animes]> = PublishRelay()
     
     var selectedAnimes: [Anime] = [] {
         didSet {
@@ -18,14 +24,27 @@ final class AnimesViewModelConcrete: NSObject {
         }
     }
     
-    init(getTodayAnimesUseCase: GetTodayAnimesUseCase, coordinator: AnimesCoordinatorProtocol) {
-        self.getTodayAnimesUseCase = getTodayAnimesUseCase
+    init(getAnimesUseCase: GetAnimesUseCase, coordinator: AnimesCoordinatorProtocol) {
+        self.getAnimesUseCase = getAnimesUseCase
         self.coordinator = coordinator
     }
 }
 
 extension AnimesViewModelConcrete: AnimesViewModelProtocol {
-    func getTodayAnimes(completion: @escaping (Result<[Animes], HttpErrorType>) -> Void) {
-        getTodayAnimesUseCase.getTodayAnimes(completion: completion)
+    func didLoadAnimes() {
+        getAnimesUseCase.invoke(url: APIServicesRequestType.season("winter").url)
+            .flatMap { [weak self] winter -> Observable<[Animes]> in
+                guard let self = self else { return .error(HttpErrorType.unknown) }
+                
+                return self.getAnimesUseCase.invoke(url: APIServicesRequestType.trend.url).map { trend -> [Animes] in
+                    return [trend, winter]
+                }
+            }.subscribe(onNext: { [weak self] animes in
+                guard let self = self else { return }
+                
+                self.animes.accept(animes)
+            }, onError: { error in
+                // TODO: implementar caso de erro
+            }).disposed(by: disposeBag)
     }
 }

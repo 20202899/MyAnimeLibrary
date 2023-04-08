@@ -6,8 +6,8 @@
 //
 
 import Foundation
+import RxSwift
 
 public protocol AnimesRepository {
-    func fetchAnimes(completion: @escaping (Result<Animes, HttpErrorType>) -> Void)
-    func fetchTodayAnimes(completion: @escaping (Result<[Animes], HttpErrorType>) -> Void)
+    func fetchAnimes(url: URL?) -> Observable<Animes>
 }

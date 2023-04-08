@@ -7,8 +7,8 @@
 
 import Foundation
 import Core
+import RxSwift
 
 public protocol APIServiceProtocol {
-    func request<T: Decodable>(_ request: UrlProtocol, completion: @escaping (Result<T, HttpErrorType>) -> Void)
-    func request<T: Decodable>(_ request: UrlProtocol..., completion: @escaping (Result<[T], HttpErrorType>) -> Void)
+    func request<T: Decodable>(_ request: URL?) -> Observable<T>
 }

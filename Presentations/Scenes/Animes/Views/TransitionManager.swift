@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import iOSCommons
 
 enum TransitionType {
     case present
@@ -16,60 +17,72 @@ enum TransitionType {
 
 final class TransitionManager: NSObject {
     private let transitionDuration: Double = 1
+    private let shrinkDuration: Double = 0.3
     var transition: TransitionType = .present
     var originFrame: CGRect = .zero
-    var dismissCompletion: (() -> Void)?
 }
 
 extension TransitionManager: UIViewControllerAnimatedTransitioning {
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let containerView = transitionContext.containerView
-        let toView = transitionContext.view(forKey: .to)!
-        let fromView = transitionContext.view(forKey: .from)!
-        let recipeView = transition == .present ? toView : fromView
+        containerView.backgroundColor = .systemBackground
+ 
+        guard let fromView = transitionContext.view(forKey: .from), let toView = transitionContext.view(forKey: .to), let detailView = toView as? DetailView, let animesView = fromView as? AnimesView, let listItem = animesView.selectedView else { return }
         
-        let initialFrame = transition == .present ? originFrame : recipeView.frame
-        let finalFrame = transition == .present ? recipeView.frame : originFrame
+        toView.isHidden = true
+        listItem.isHidden = true
         
-        let xScaleFactor = transition == .present ?
-          initialFrame.width / finalFrame.width :
-          finalFrame.width / initialFrame.width
+        let originFrame = listItem.contentView.convert(listItem.contentView.frame, to: nil)
+        let cardView = CardView(frame: originFrame)
         
-        let yScaleFactor = transition == .present ?
-          initialFrame.height / finalFrame.height :
-          finalFrame.height / initialFrame.height
+        containerView.addSubview(cardView)
+        containerView.addSubview(toView)
         
-        let scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
+        NSLayoutConstraint.activate([
+            cardView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            cardView.leftAnchor.constraint(equalTo: containerView.leftAnchor),
+            cardView.rightAnchor.constraint(equalTo: containerView.rightAnchor),
+        ])
         
-        if transition == .present {
-          recipeView.transform = scaleTransform
-          recipeView.center = CGPoint(
-            x: initialFrame.midX,
-            y: initialFrame.midY)
-          recipeView.clipsToBounds = true
+        detailView.titleLabel.text = listItem.titleLabel.text
+        cardView.titleLabel.text = listItem.titleLabel.text
+        cardView.animes = listItem.animes
+        
+        let shrinkAnimation = UIViewPropertyAnimator(duration: shrinkDuration, curve: .easeOut) {
+            cardView.transform = CGAffineTransform(scaleX: 0.90, y: 0.90)
         }
         
-        recipeView.layer.cornerRadius = transition == .present ? 20.0 : 0.0
-        recipeView.layer.masksToBounds = true
+        let sprintTiming = UISpringTimingParameters(dampingRatio: 0.4, initialVelocity: CGVector(dx: 1, dy: 1))
         
-        containerView.addSubview(toView)
-        containerView.bringSubviewToFront(recipeView)
+        let moveExpandAnimation = UIViewPropertyAnimator(duration: transitionDuration - shrinkDuration, timingParameters: sprintTiming)
         
-        UIView.animate(
-          withDuration: transitionDuration,
-          delay:0.0,
-          usingSpringWithDamping: 0.5,
-          initialSpringVelocity: 0.2,
-          animations: {
-              recipeView.transform = self.transition == .present ? .identity : scaleTransform
-            recipeView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-              recipeView.layer.cornerRadius = self.transition == .present ? 20.0 : 0.0
-        }, completion: { _ in
-            if self.transition != .present {
-            self.dismissCompletion?()
-            }
-          transitionContext.completeTransition(true)
-        })
+        moveExpandAnimation.addAnimations {
+            cardView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            cardView.contentTableViewHeightConstraint?.isActive = false
+            cardView.containerViewLeftConstraint?.constant = .zero
+            cardView.containerViewRightConstraint?.constant = .zero
+            cardView.frame = toView.frame
+            cardView.frame.origin.y = 44
+            cardView.layoutIfNeeded()
+            cardView.isLoadAllAnimes = true
+            cardView.removeShadow()
+            cardView.titleLabel.font = .systemFont(ofSize: 32, weight: .bold)
+            cardView.titleLabel.numberOfLines = 2
+            cardView.titleLabel.lineBreakMode = .byWordWrapping
+            cardView.titleLabel.lineBreakStrategy = .hangulWordPriority
+        }
+        
+        moveExpandAnimation.addCompletion { _ in
+            cardView.isHidden = true
+            toView.isHidden = false
+            transitionContext.completeTransition(true)
+        }
+        
+        shrinkAnimation.addCompletion { _ in
+            moveExpandAnimation.startAnimation()
+        }
+        
+        shrinkAnimation.startAnimation()
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {

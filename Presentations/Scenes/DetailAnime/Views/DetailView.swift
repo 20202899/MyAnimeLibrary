@@ -26,18 +26,13 @@ final class DetailView: UIView {
         return view
     }()
     
-    private lazy var headerView: HeaderView = {
-        let view = HeaderView(frame: .zero)
-        view.titleLabel.text = "Tendência da semana"
-        view.profileImageView.isHidden = true
-        view.closeButton.isHidden = false
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.closeAction = { [weak self] in
-            guard let self = self else { return }
-            
-            self.didClose?()
-        }
-        return view
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 32, weight: .bold)
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
+        return label
     }()
     
     private lazy var contentTableView: ResizeTableView = {
@@ -80,17 +75,17 @@ final class DetailView: UIView {
             contentScrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         
-        contentScrollView.addSubview(headerView)
+        contentScrollView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: contentScrollView.topAnchor, constant: LayoutSpacing.s24.value),
-            headerView.leftAnchor.constraint(equalTo: contentScrollView.leftAnchor),
-            headerView.rightAnchor.constraint(equalTo: contentScrollView.rightAnchor),
-            headerView.widthAnchor.constraint(equalToConstant: frame.width)
+            titleLabel.topAnchor.constraint(equalTo: contentScrollView.topAnchor, constant: LayoutSpacing.s24.value),
+            titleLabel.leftAnchor.constraint(equalTo: contentScrollView.leftAnchor, constant: LayoutSpacing.s24.value),
+            titleLabel.rightAnchor.constraint(equalTo: contentScrollView.rightAnchor, constant: LayoutSpacing.s24.value),
+            titleLabel.widthAnchor.constraint(equalToConstant: frame.width)
         ])
         
         contentScrollView.addSubview(contentTableView)
         NSLayoutConstraint.activate([
-            contentTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: LayoutSpacing.s4.value),
+            contentTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: LayoutSpacing.s4.value),
             contentTableView.leftAnchor.constraint(equalTo: contentScrollView.leftAnchor),
             contentTableView.rightAnchor.constraint(equalTo: contentScrollView.rightAnchor),
             contentTableView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),

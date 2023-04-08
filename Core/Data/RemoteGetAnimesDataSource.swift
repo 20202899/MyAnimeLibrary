@@ -6,8 +6,8 @@
 //
 
 import Foundation
+import RxSwift
 
 public protocol RemoteGetAnimesDataSource {
-    func getAnimes(completion: @escaping (Result<Animes, HttpErrorType>) -> Void)
-    func getTodayAnimes(completion: @escaping (Result<[Animes], HttpErrorType>) -> Void)
+    func getAnimes(url: URL?) -> Observable<Animes>
 }
