@@ -7,11 +7,7 @@
 
 import CoreGraphics
 
-public protocol LayoutSpacingProtocol {
-    var value: CGFloat { get }
-}
-
-public enum LayoutSpacing: LayoutSpacingProtocol {
+public enum LayoutSpacing {
     case s0
     case s4
     case s8

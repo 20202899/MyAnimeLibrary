@@ -9,8 +9,10 @@ import Foundation
 import UIKit
 import iOSCommons
 import Core
+import RxSwift
 
 final class AnimesViewController: UIViewController {
+    private let disposeBag = DisposeBag()
     private var viewModel: AnimesViewModelProtocol
     
     lazy var contentView: AnimesView = {
@@ -43,23 +45,19 @@ final class AnimesViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
         
-        fetchAnimes()
+        viewModel.animes
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] animes in
+                guard let self = self else { return }
+                
+                self.contentView.animes = animes
+            }).disposed(by: disposeBag)
     }
     
-    private func fetchAnimes() {
-        viewModel.getTodayAnimes { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let animes):
-                DispatchQueue.main.async {
-                    self.contentView.animes = animes
-                }
-                
-            case .failure:
-                break
-            }
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.didLoadAnimes()
     }
     
     deinit {

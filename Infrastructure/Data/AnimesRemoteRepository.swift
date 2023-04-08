@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import RxSwift
 
 public final class AnimesRemoteRepository {
     private let remoteGetAnimesDataSource: RemoteGetAnimesDataSource
@@ -17,11 +18,7 @@ public final class AnimesRemoteRepository {
 }
 
 extension AnimesRemoteRepository: AnimesRepository {
-    public func fetchAnimes(completion: @escaping (Result<Animes, HttpErrorType>) -> Void) {
-        remoteGetAnimesDataSource.getAnimes(completion: completion)
-    }
-    
-    public func fetchTodayAnimes(completion: @escaping (Result<[Animes], HttpErrorType>) -> Void) {
-        remoteGetAnimesDataSource.getTodayAnimes(completion: completion)
+    public func fetchAnimes(url: URL?) -> Observable<Animes> {
+        return remoteGetAnimesDataSource.getAnimes(url: url)
     }
 }

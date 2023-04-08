@@ -7,8 +7,10 @@
 
 import Foundation
 import Core
+import RxRelay
 
 protocol AnimesViewModelProtocol {
     var selectedAnimes: [Anime] { get set }
-    func getTodayAnimes(completion: @escaping (Result<[Animes], HttpErrorType>) -> Void)
+    var animes: PublishRelay<[Animes]> { get set }
+    func didLoadAnimes()
 }

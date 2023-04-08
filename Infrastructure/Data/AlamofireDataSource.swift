@@ -7,23 +7,19 @@
 
 import Foundation
 import Core
+import RxSwift
 
 public final class AlamofireDataSource {
     private let service: APIServiceProtocol
-    private var url: UrlProtocol
+    private var url: URL?
     
     public init() {
         self.service = APIServices.shared
-        self.url = APIServicesRequestType.trend
     }
 }
 
 extension AlamofireDataSource: RemoteGetAnimesDataSource {
-    public func getAnimes(completion: @escaping (Result<Animes, HttpErrorType>) -> Void) {
-        service.request(url, completion: completion)
-    }
-    
-    public func getTodayAnimes(completion: @escaping (Result<[Animes], HttpErrorType>) -> Void) {
-        service.request(APIServicesRequestType.trend, APIServicesRequestType.season("winter"), completion: completion)
+    public func getAnimes(url: URL?) -> Observable<Animes> {
+        return service.request(url)
     }
 }

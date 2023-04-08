@@ -7,8 +7,9 @@
 
 import Foundation
 import Core
+import RxSwift
 
-public final class GetTodayAnimesUseCaseConcrete {
+public final class GetAnimesUseCaseConcrete {
     private let repository: AnimesRepository
     
     public init(repository: AnimesRepository) {
@@ -16,8 +17,8 @@ public final class GetTodayAnimesUseCaseConcrete {
     }
 }
 
-extension GetTodayAnimesUseCaseConcrete: GetTodayAnimesUseCase {
-    public func getTodayAnimes(completion: @escaping (Result<[Animes], HttpErrorType>) -> Void) {
-        repository.fetchTodayAnimes(completion: completion)
+extension GetAnimesUseCaseConcrete: GetAnimesUseCase {
+    public func invoke(url: URL?) -> Observable<Animes> {
+        return repository.fetchAnimes(url: url)
     }
 }
