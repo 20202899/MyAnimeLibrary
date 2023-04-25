@@ -17,12 +17,10 @@ public protocol AnimesCoordinatorProtocol: Coordinator {
 public final class AnimesCoordinator: NSObject, AnimesCoordinatorProtocol {
     public var childCoordinators: [Coordinator] = []
     public var navigationController: UINavigationController?
-    private let transitionManager = TransitionManager()
     
     public init(navigationController: UINavigationController?) {
         super.init()
         self.navigationController = navigationController
-        self.navigationController?.delegate = transitionManager
     }
     
     public func start() {
@@ -32,12 +30,10 @@ public final class AnimesCoordinator: NSObject, AnimesCoordinatorProtocol {
     
     public func navigateToDetailAnime(animes: [Anime]) {
         let viewController = makeDetailAnimeViewController(coordinator: self, animes: animes)
-        transitionManager.transition = .present
         navigationController?.show(viewController, sender: nil)
     }
     
     public func back() {
-        transitionManager.transition = .dimiss
         navigationController?.popViewController(animated: true)
     }
 }

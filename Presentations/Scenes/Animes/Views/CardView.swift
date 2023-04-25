@@ -91,7 +91,7 @@ final class CardView: UIView {
         NSLayoutConstraint.activate([
             titleLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: LayoutSpacing.s24.value),
             titleLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -LayoutSpacing.s24.value),
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: LayoutSpacing.s16.value)
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: LayoutSpacing.s24.value)
         ])
         
         containerView.addSubview(contentTableView)

@@ -13,6 +13,7 @@ import iOSCommons
 
 final class DetailView: UIView {
     var didClose: (() -> Void)?
+    
     var animes: [Anime] = [] {
         didSet {
             guard !animes.isEmpty else { return }
@@ -20,35 +21,18 @@ final class DetailView: UIView {
         }
     }
     
-    private lazy var contentScrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 32, weight: .bold)
-        label.numberOfLines = 2
-        label.lineBreakMode = .byWordWrapping
-        return label
-    }()
-    
-    private lazy var contentTableView: ResizeTableView = {
-        let tableView = ResizeTableView()
+    private lazy var contentTableView: UITableView = {
+        let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.clipsToBounds = false
         tableView.estimatedRowHeight = 85
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.dataSource = self
+        tableView.register(AnimeItemTableViewCell.self, forCellReuseIdentifier: AnimeItemTableViewCell.identifier)
         return tableView
     }()
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,39 +46,18 @@ final class DetailView: UIView {
     
     private func setupViews() {
         backgroundColor = .systemBackground
-
-        contentTableView.register(AnimeItemTableViewCell.self, forCellReuseIdentifier: AnimeItemTableViewCell.identifier)
-        contentTableView.dataSource = self
-        contentTableView.delegate = self
         
-        addSubview(contentScrollView)
+        addSubview(contentTableView)
         NSLayoutConstraint.activate([
-            contentScrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            contentScrollView.leftAnchor.constraint(equalTo: leftAnchor),
-            contentScrollView.rightAnchor.constraint(equalTo: rightAnchor),
-            contentScrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-        
-        contentScrollView.addSubview(titleLabel)
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentScrollView.topAnchor, constant: LayoutSpacing.s24.value),
-            titleLabel.leftAnchor.constraint(equalTo: contentScrollView.leftAnchor, constant: LayoutSpacing.s24.value),
-            titleLabel.rightAnchor.constraint(equalTo: contentScrollView.rightAnchor, constant: LayoutSpacing.s24.value),
-            titleLabel.widthAnchor.constraint(equalToConstant: frame.width)
-        ])
-        
-        contentScrollView.addSubview(contentTableView)
-        NSLayoutConstraint.activate([
-            contentTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: LayoutSpacing.s4.value),
-            contentTableView.leftAnchor.constraint(equalTo: contentScrollView.leftAnchor),
-            contentTableView.rightAnchor.constraint(equalTo: contentScrollView.rightAnchor),
-            contentTableView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
-            contentTableView.widthAnchor.constraint(equalToConstant: frame.width)
+            contentTableView.topAnchor.constraint(equalTo: topAnchor),
+            contentTableView.leftAnchor.constraint(equalTo: leftAnchor),
+            contentTableView.rightAnchor.constraint(equalTo: rightAnchor),
+            contentTableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
 
-extension DetailView: UITableViewDataSource, UITableViewDelegate {
+extension DetailView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         animes.count
     }

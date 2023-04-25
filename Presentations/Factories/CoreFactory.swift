@@ -20,3 +20,7 @@ func makeAnimesRepository() -> AnimesRepository {
 func makeGetAnimesUseCase() -> GetAnimesUseCase {
     return GetAnimesUseCaseConcrete(repository: makeAnimesRepository())
 }
+
+func makeSeasonProvider() -> SeasonProviderProtocol {
+    return SeasonProvider.shared
+}

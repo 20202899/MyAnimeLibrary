@@ -43,7 +43,14 @@ final class AnimesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        title = "Animes"
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationItem.largeTitleDisplayMode = .automatic
+        UINavigationBar.appearance().tintColor = .black
+        
+        viewModel.didLoadAnimes()
         
         viewModel.animes
             .observe(on: MainScheduler.instance)
@@ -57,7 +64,7 @@ final class AnimesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.didLoadAnimes()
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     deinit {

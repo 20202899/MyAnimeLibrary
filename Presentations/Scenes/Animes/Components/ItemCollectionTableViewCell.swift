@@ -173,7 +173,7 @@ extension ItemCollectionTableViewCell: UITableViewDataSource {
             cell.animeImageView.sd_setImage(with: url)
         }
         
-        cell.titleLabel.text = anime.attributes.titles.en ?? anime.attributes.titles.en_jp
+        cell.titleLabel.text = anime.title
         cell.descriptionLabel.text = anime.attributes.description
         
         return cell

@@ -9,14 +9,13 @@ import UIKit
 
 final class DetailAnimeViewController: UIViewController {
     private var viewModel: DetailAnimeViewModelProtocol
-    private let transitionManager = TransitionManager()
     
     lazy var contentView: DetailView = {
         let view = DetailView(frame: view.frame)
         view.didClose = { [weak self] in
             guard let self = self else { return }
             
-            self.viewModel.isBack = true
+            self.viewModel.isBack.accept(true)
         }
         return view
     }()
@@ -39,6 +38,9 @@ final class DetailAnimeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Detalhe"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationItem.largeTitleDisplayMode = .automatic
         self.contentView.animes = viewModel.animes
     }
 }
