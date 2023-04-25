@@ -11,10 +11,11 @@ import Infrastructure
 import RxSwift
 import RxRelay
 
-final class AnimesViewModelConcrete: NSObject {
+final class AnimesViewModelConcrete {
     private let disposeBag = DisposeBag()
     private let getAnimesUseCase: GetAnimesUseCase
     private let coordinator: AnimesCoordinatorProtocol
+    private let seasonProvider: SeasonProviderProtocol
     
     var animes: PublishRelay<[Animes]> = PublishRelay()
     
@@ -24,15 +25,16 @@ final class AnimesViewModelConcrete: NSObject {
         }
     }
     
-    init(getAnimesUseCase: GetAnimesUseCase, coordinator: AnimesCoordinatorProtocol) {
+    init(getAnimesUseCase: GetAnimesUseCase, coordinator: AnimesCoordinatorProtocol, seasonProvider: SeasonProviderProtocol) {
         self.getAnimesUseCase = getAnimesUseCase
         self.coordinator = coordinator
+        self.seasonProvider = seasonProvider
     }
 }
 
 extension AnimesViewModelConcrete: AnimesViewModelProtocol {
     func didLoadAnimes() {
-        getAnimesUseCase.invoke(url: APIServicesRequestType.season("winter").url)
+        getAnimesUseCase.invoke(url: APIServicesRequestType.season(seasonProvider.season).url)
             .flatMap { [weak self] winter -> Observable<[Animes]> in
                 guard let self = self else { return .error(HttpErrorType.unknown) }
                 
@@ -44,6 +46,7 @@ extension AnimesViewModelConcrete: AnimesViewModelProtocol {
                 
                 self.animes.accept(animes)
             }, onError: { error in
+                print(error)
                 // TODO: implementar caso de erro
             }).disposed(by: disposeBag)
     }

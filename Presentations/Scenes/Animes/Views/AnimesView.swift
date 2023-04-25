@@ -19,24 +19,8 @@ final class AnimesView: UIView {
         }
     }
     
-    var selectedView: ItemCollectionTableViewCell?
-    
-    private lazy var contentScrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
-        return view
-    }()
-    
-    private lazy var headerView: HeaderView = {
-        let view = HeaderView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false
-        return view
-    }()
-    
-    private lazy var contentTableView: ResizeTableView = {
-        let view = ResizeTableView()
+    lazy var contentTableView: UITableView = {
+        let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.separatorStyle = .none
         view.backgroundColor = .clear
@@ -63,33 +47,15 @@ final class AnimesView: UIView {
     private func setupViews() {
         backgroundColor = .systemBackground
 
-        contentScrollView.delegate = self
-        
         contentTableView.register(ItemCollectionTableViewCell.self, forCellReuseIdentifier: ItemCollectionTableViewCell.identifier)
         contentTableView.dataSource = self
         
-        addSubview(contentScrollView)
+        addSubview(contentTableView)
         NSLayoutConstraint.activate([
-            contentScrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: LayoutSpacing.s16.value),
-            contentScrollView.leftAnchor.constraint(equalTo: leftAnchor),
-            contentScrollView.rightAnchor.constraint(equalTo: rightAnchor),
-            contentScrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-        
-        contentScrollView.addSubview(headerView)
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
-            headerView.leftAnchor.constraint(equalTo: contentScrollView.leftAnchor),
-            headerView.rightAnchor.constraint(equalTo: contentScrollView.rightAnchor),
-            headerView.widthAnchor.constraint(equalToConstant: frame.width)
-        ])
-        
-        contentScrollView.addSubview(contentTableView)
-        NSLayoutConstraint.activate([
-            contentTableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-            contentTableView.leftAnchor.constraint(equalTo: contentScrollView.leftAnchor),
-            contentTableView.rightAnchor.constraint(equalTo: contentScrollView.rightAnchor),
-            contentTableView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
+            contentTableView.topAnchor.constraint(equalTo: topAnchor),
+            contentTableView.leftAnchor.constraint(equalTo: leftAnchor),
+            contentTableView.rightAnchor.constraint(equalTo: rightAnchor),
+            contentTableView.bottomAnchor.constraint(equalTo: bottomAnchor),
             contentTableView.widthAnchor.constraint(equalToConstant: frame.width)
         ])
     }
@@ -111,7 +77,6 @@ extension AnimesView: UITableViewDataSource, UITableViewDelegate {
         cell.didAction = { [weak self] view in
             guard let self = self else { return }
             
-            self.selectedView = view
             self.didNextForward?(animes.data)
         }
         
@@ -120,7 +85,7 @@ extension AnimesView: UITableViewDataSource, UITableViewDelegate {
         if indexPath.row == .zero {
             cell.titleLabel.text = "Tendências da semana"
         } else {
-            cell.titleLabel.text = "Animes da temporada de inverno"
+            cell.titleLabel.text = "Animes da temporada de \(SeasonProvider.shared.name.capitalized)"
         }
         
         return cell

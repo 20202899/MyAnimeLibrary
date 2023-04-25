@@ -7,8 +7,9 @@
 
 import Foundation
 import Core
+import RxRelay
 
 protocol DetailAnimeViewModelProtocol {
     var animes: [Anime] { get }
-    var isBack: Bool { get set }
+    var isBack: BehaviorRelay<Bool> { get set }
 }

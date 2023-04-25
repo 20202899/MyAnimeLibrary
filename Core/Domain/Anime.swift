@@ -21,6 +21,27 @@ public struct Anime: Decodable {
     public let links: AnimeLinks
     public let attributes: Attributes
     public let relationships: Relationships
+    public let title: String
+    
+    enum CodingKeys: CodingKey {
+        case id
+        case type
+        case links
+        case attributes
+        case relationships
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.type = try container.decode(String.self, forKey: .type)
+        self.links = try container.decode(AnimeLinks.self, forKey: .links)
+        self.attributes = try container.decode(Attributes.self, forKey: .attributes)
+        self.relationships = try container.decode(Relationships.self, forKey: .relationships)
+        
+        let titles = attributes.titles
+        self.title = titles.en ?? titles.en_jp ?? titles.en_cn ?? titles.ja_jp ?? titles.zh_cn ?? String()
+    }
     
     public init(id: String, type: String, links: AnimeLinks, attributes: Attributes, relationships: Relationships) {
         self.id = id
@@ -28,6 +49,9 @@ public struct Anime: Decodable {
         self.links = links
         self.attributes = attributes
         self.relationships = relationships
+        
+        let titles = attributes.titles
+        self.title = titles.en ?? titles.en_jp ?? titles.en_cn ?? titles.ja_jp ?? titles.zh_cn ?? String()
     }
 }
 

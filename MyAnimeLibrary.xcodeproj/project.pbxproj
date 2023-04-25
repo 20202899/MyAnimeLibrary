@@ -31,6 +31,7 @@
 		6A75DCD929ABBEE800A89DD0 /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A75DCBF29ABB40F00A89DD0 /* CircleImageView.swift */; };
 		6A75DCDA29ABBEFF00A89DD0 /* Components.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A75DCC829ABBE8700A89DD0 /* Components.framework */; };
 		6A75DCDB29ABBEFF00A89DD0 /* Components.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A75DCC829ABBE8700A89DD0 /* Components.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6A841B9C29E21CD4007FA18C /* SeasonProviderProcotol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A841B9B29E21CD4007FA18C /* SeasonProviderProcotol.swift */; };
 		6A91E71529DE712C0050FA7D /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A91E71429DE712C0050FA7D /* CardView.swift */; };
 		6AA8196F29A837CA009AED81 /* UrlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA8196E29A837CA009AED81 /* UrlProtocol.swift */; };
 		6AA8197429A83B34009AED81 /* AlamofireDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA8197329A83B34009AED81 /* AlamofireDataSource.swift */; };
@@ -58,7 +59,6 @@
 		6AA8237D29A8E77A00156537 /* Presentations.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA8198129A84071009AED81 /* Presentations.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6AA8238129A8E79500156537 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA8238029A8E79400156537 /* MainCoordinator.swift */; };
 		6AB64EBE29B01F8F00029BF1 /* ItemCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB64EBD29B01F8F00029BF1 /* ItemCollectionTableViewCell.swift */; };
-		6ABA804029AF722800D3D365 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABA803F29AF722800D3D365 /* TransitionManager.swift */; };
 		6ABB103129AF02CD00D9FD35 /* GetAnimesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABB103029AF02CD00D9FD35 /* GetAnimesUseCase.swift */; };
 		6ABB103329AF0B9400D9FD35 /* GetAnimesUseCaseConcrete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABB103229AF0B9400D9FD35 /* GetAnimesUseCaseConcrete.swift */; };
 		6ABCABBD29B3764C0048DA15 /* DetailAnimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ABCABBC29B3764C0048DA15 /* DetailAnimeViewController.swift */; };
@@ -235,6 +235,7 @@
 		6A75DCBA29ABA8BA00A89DD0 /* LayoutDrawableConcrete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutDrawableConcrete.swift; sourceTree = "<group>"; };
 		6A75DCBF29ABB40F00A89DD0 /* CircleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
 		6A75DCC829ABBE8700A89DD0 /* Components.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Components.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A841B9B29E21CD4007FA18C /* SeasonProviderProcotol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeasonProviderProcotol.swift; sourceTree = "<group>"; };
 		6A91E71429DE712C0050FA7D /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		6AA8196E29A837CA009AED81 /* UrlProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlProtocol.swift; sourceTree = "<group>"; };
 		6AA8197329A83B34009AED81 /* AlamofireDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireDataSource.swift; sourceTree = "<group>"; };
@@ -253,7 +254,6 @@
 		6AA8236929A8E6C200156537 /* iOSCommons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iOSCommons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AA8238029A8E79400156537 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		6AB64EBD29B01F8F00029BF1 /* ItemCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCollectionTableViewCell.swift; sourceTree = "<group>"; };
-		6ABA803F29AF722800D3D365 /* TransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
 		6ABB103029AF02CD00D9FD35 /* GetAnimesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAnimesUseCase.swift; sourceTree = "<group>"; };
 		6ABB103229AF0B9400D9FD35 /* GetAnimesUseCaseConcrete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAnimesUseCaseConcrete.swift; sourceTree = "<group>"; };
 		6ABCABBC29B3764C0048DA15 /* DetailAnimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAnimeViewController.swift; sourceTree = "<group>"; };
@@ -419,7 +419,6 @@
 			children = (
 				6A037C5529ADA31900140AC3 /* AnimesView.swift */,
 				6A037C5729ADA3A000140AC3 /* HeaderView.swift */,
-				6ABA803F29AF722800D3D365 /* TransitionManager.swift */,
 				6A91E71429DE712C0050FA7D /* CardView.swift */,
 			);
 			path = Views;
@@ -442,6 +441,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		6A841B9A29E21CC2007FA18C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6A841B9B29E21CD4007FA18C /* SeasonProviderProcotol.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		6AA8197029A83AC0009AED81 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -462,6 +469,7 @@
 		6AA8198229A84071009AED81 /* Presentations */ = {
 			isa = PBXGroup;
 			children = (
+				6A841B9A29E21CC2007FA18C /* Utils */,
 				6AA819FA29A85D34009AED81 /* AnimesCoordinator.swift */,
 				6A75DCB929ABA8A700A89DD0 /* Drawable */,
 				6AA8199729A8408F009AED81 /* Factories */,
@@ -1160,7 +1168,6 @@
 				6AA8199B29A840CC009AED81 /* CoreFactory.swift in Sources */,
 				6AA8236329A8E35300156537 /* ViewControllerFactory.swift in Sources */,
 				6A53419129B18CFE004792AE /* AnimesViewModelConcrete.swift in Sources */,
-				6ABA804029AF722800D3D365 /* TransitionManager.swift in Sources */,
 				6AB64EBE29B01F8F00029BF1 /* ItemCollectionTableViewCell.swift in Sources */,
 				6AA819A729A84266009AED81 /* AnimesViewController.swift in Sources */,
 				6A53419329B18D1A004792AE /* AnimesViewModelProtocol.swift in Sources */,
@@ -1172,6 +1179,7 @@
 				6ABCABBD29B3764C0048DA15 /* DetailAnimeViewController.swift in Sources */,
 				6A53419629B18E49004792AE /* ViewModelFactory.swift in Sources */,
 				6ABCABC529B378CE0048DA15 /* DetailAnimeViewModelConcrete.swift in Sources */,
+				6A841B9C29E21CD4007FA18C /* SeasonProviderProcotol.swift in Sources */,
 				6AA819FB29A85D34009AED81 /* AnimesCoordinator.swift in Sources */,
 				6ABCABC029B3771D0048DA15 /* DetailView.swift in Sources */,
 				6A037C5829ADA3A000140AC3 /* HeaderView.swift in Sources */,

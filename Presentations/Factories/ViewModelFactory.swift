@@ -8,7 +8,7 @@
 import Core
 
 func makeAnimesViewModel(coordinator: AnimesCoordinatorProtocol) -> AnimesViewModelProtocol {
-    return AnimesViewModelConcrete(getAnimesUseCase: makeGetAnimesUseCase(), coordinator: coordinator)
+    return AnimesViewModelConcrete(getAnimesUseCase: makeGetAnimesUseCase(), coordinator: coordinator, seasonProvider: makeSeasonProvider())
 }
 
 func makeAnimeDetailViewModel(coordinator: AnimesCoordinator, animes: [Anime]) -> DetailAnimeViewModelProtocol {
